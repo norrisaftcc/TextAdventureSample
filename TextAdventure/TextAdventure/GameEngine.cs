@@ -32,6 +32,7 @@ namespace TextAdventure
         public string EnterCommand(string input)
         {
             string output = "";
+            input = input.ToLower();
             if (EchoMode)
             {
                 output +=  ">" + input + NEWLINE;
