@@ -26,6 +26,7 @@ namespace TextAdventure
         {
             // init game engine
             engine = new GameEngine();
+            engine.Init();
 
             // pressing enter presses 'Submit'
             this.AcceptButton = btnSubmit;
@@ -47,7 +48,7 @@ namespace TextAdventure
             Console.WriteLine("Submitted text" + txtInput.Text);
 
             // submit command to game engine
-            string output = engine.doCommand(txtInput.Text);
+            string output = engine.EnterCommand(txtInput.Text);
 
             // display output
             rtOutput.Text += output + engine.NEWLINE;

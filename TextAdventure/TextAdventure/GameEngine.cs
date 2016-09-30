@@ -10,28 +10,75 @@ namespace TextAdventure
     {
         public string NEWLINE = "\r\n"; // used for formatting
 
-        public bool echoMode { get; set; }
+        public bool EchoMode { get; set; }
+
+        public World World { get; set; }
 
         public GameEngine()
         {
             this.Init();
         }
 
-        private void Init()
+        public void Init()
         {
-            echoMode = true;
+            EchoMode = true; // echo back last command
+
+            // init the world
+            World = new World();
+            World.Init();
 
         }
 
-        public string doCommand(string input)
+        public string EnterCommand(string input)
         {
             string output = "";
-            if (echoMode)
+            if (EchoMode)
             {
-                output +=  ">" + input;
+                output +=  ">" + input + NEWLINE;
 
             }
+            string[] commands = input.Split(null);
+            string verb = commands[0];
+            string noun = "";
+            if (commands.Count() > 1)
+            {
+                noun = commands[1];
+            }
+
+            output += DoCommand(verb, noun);
+
             return output;
+        }
+
+        private string DoCommand(string verb, string noun)
+        {
+            string result = "";
+
+            // switch based on verb
+            if (verb == "look")
+            {
+                result = DoLook(noun);
+            }
+
+            return result;
+        }
+
+        private string DoLook(string noun)
+        {
+            // look without a noun gives the description of the current room
+            // with a noun, give description of the object named
+            string result = "";
+            if (noun == "")
+            {
+                Room r = World.Rooms[World.PlayerLoc];
+                result += r.Name + NEWLINE;
+                result += r.Description += NEWLINE;
+            }
+            else
+            {
+                result += "I don't see " + noun + " here.";
+            }
+            return result;
         }
 
     } // class GameEngine
