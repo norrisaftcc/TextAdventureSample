@@ -8,7 +8,7 @@ namespace TextAdventure
 {
     public class GameEngine
     {
-        public string NEWLINE = "\r\n"; // used for formatting
+        public string NEWLINE = "\n"; // used for formatting
 
         public bool EchoMode { get; set; }
 
@@ -60,6 +60,10 @@ namespace TextAdventure
             {
                 result = DoLook(noun);
             }
+            else if (verb == "go")
+            {
+                result = DoGo(noun);
+            }
 
             return result;
         }
@@ -71,14 +75,52 @@ namespace TextAdventure
             string result = "";
             if (noun == "")
             {
+                // "look" - room description
                 Room r = World.Rooms[World.PlayerLoc];
                 result += r.Name + NEWLINE;
-                result += r.Description += NEWLINE;
+                result += r.Description + NEWLINE;
+                result += "Exits lead:";
+                foreach (Exit ex in r.Exits)
+                {
+                    if (ex.Destination != -1)
+                    {
+                        result += " " + ex.Name;
+                    }
+                }
             }
             else
             {
+                // "look noun" - item description
                 result += "I don't see " + noun + " here.";
             }
+            result += NEWLINE;
+            return result;
+        }
+
+        private string DoGo(string noun)
+        {
+            string result = "";
+            Room r = World.Rooms[World.PlayerLoc];
+            foreach (Exit ex in r.Exits)
+            {
+                if (noun == ex.Name.ToLower())
+                {
+                    if (ex.Destination == -1)
+                    {
+                        result += "You can't go that way." + NEWLINE;
+                        return result;
+                    }
+                    else
+                    {
+                        // valid room exit -- move player to new room.
+                        World.PlayerLoc = ex.Destination;
+                        result += "You travel " + ex.Name + " to " + World.Rooms[World.PlayerLoc].Name + "." + NEWLINE;
+
+                        //  result += DoLook("");
+                    }
+                }
+            }
+
             return result;
         }
 

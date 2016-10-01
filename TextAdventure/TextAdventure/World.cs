@@ -14,7 +14,7 @@ namespace TextAdventure
         public List<Object> Objects { get; set; }
         public List<Creature> Creatures { get; set; }
 
-        public int PlayerLoc { get; }
+        public int PlayerLoc { get; set; }
 
         public World()
         {
@@ -22,6 +22,7 @@ namespace TextAdventure
             Objects = new List<Object>();
             Creatures = new List<Creature>();
             //this.Init();
+            PlayerLoc = 0; // player starting location
         }
 
         public void Init()
@@ -33,9 +34,18 @@ namespace TextAdventure
         {
             // populate with some simple (stub) values for testing
             Room r = new Room();
+            r.Id = 0;
             r.Name = "Entry";
             r.Description = "You are standing in the entrance.";
+            r.Exits[Exit.NORTH].Destination = 1;
             Rooms.Add(r);
+
+            Room r2 = new Room();
+            r2.Id = 1;
+            r2.Name = "Hallway";
+            r2.Description = "This is a wooden hallway.";
+            r2.Exits[Exit.SOUTH].Destination = 0;
+            Rooms.Add(r2);
         }
 
     }

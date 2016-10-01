@@ -51,7 +51,7 @@ namespace TextAdventure
             string output = engine.EnterCommand(txtInput.Text);
 
             // display output
-            rtOutput.Text += output + engine.NEWLINE;
+            rtOutput.Text += output;
             // clear input for next command
             txtInput.Text = "";
 
