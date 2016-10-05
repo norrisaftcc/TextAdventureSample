@@ -46,6 +46,21 @@ namespace TextAdventure
             r2.Description = "This is a wooden hallway.";
             r2.Exits[Exit.SOUTH].Destination = 0;
             Rooms.Add(r2);
+
+            // add a test object
+            Object o = new TextAdventure.Object();
+            o.Id = 1;
+            o.Name = "sword";
+            o.Description = "A rusty sword";
+            o.Location = 0;
+            Objects.Add(o);
+
+            Object o2 = new Object();
+            o2.Id = 2;
+            o2.Name = "coin";
+            o2.Description = "A copper coin";
+            o2.Location = 1;
+            Objects.Add(o2);
         }
 
     }

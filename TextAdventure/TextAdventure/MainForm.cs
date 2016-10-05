@@ -31,6 +31,9 @@ namespace TextAdventure
             // pressing enter presses 'Submit'
             this.AcceptButton = btnSubmit;
 
+            // start with a look command
+            txtInput.Text = "look";
+
 
         }
 

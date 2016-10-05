@@ -79,6 +79,15 @@ namespace TextAdventure
                 Room r = World.Rooms[World.PlayerLoc];
                 result += r.Name + NEWLINE;
                 result += r.Description + NEWLINE;
+                // list objects
+                foreach (Object o in World.Objects )
+                {
+                    if (o.Location == r.Id)
+                    {
+                        result += "There is a " + o.Name + " here." + NEWLINE;
+                    }
+                }
+                // list exits
                 result += "Exits lead:";
                 foreach (Exit ex in r.Exits)
                 {
@@ -87,11 +96,24 @@ namespace TextAdventure
                         result += " " + ex.Name;
                     }
                 }
+                
             }
             else
             {
                 // "look noun" - item description
-                result += "I don't see " + noun + " here.";
+                bool exists = false;
+                foreach (Object o in World.Objects)
+                {
+                    if (noun == o.Name)
+                    {
+                        exists = true;
+                        result += o.Description;
+                    }
+                }
+                if (!exists) {
+                    result += "I don't see " + noun + " here.";
+                }
+                
             }
             result += NEWLINE;
             return result;
@@ -116,7 +138,7 @@ namespace TextAdventure
                         World.PlayerLoc = ex.Destination;
                         result += "You travel " + ex.Name + " to " + World.Rooms[World.PlayerLoc].Name + "." + NEWLINE;
 
-                        //  result += DoLook("");
+                        result += DoLook("");
                     }
                 }
             }

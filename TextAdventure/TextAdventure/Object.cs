@@ -8,5 +8,10 @@ namespace TextAdventure
 {
     public class Object
     {
+        // base class for game objects.
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Location { get; set; }
     }
 }
