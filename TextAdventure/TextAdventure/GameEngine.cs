@@ -14,6 +14,8 @@ namespace TextAdventure
 
         public World World { get; set; }
 
+        private bool verbose = true;
+
         public GameEngine()
         {
             this.Init();
@@ -35,7 +37,7 @@ namespace TextAdventure
             input = input.ToLower();
             if (EchoMode)
             {
-                output +=  ">" + input + NEWLINE;
+                output += ">" + input + NEWLINE;
 
             }
             string[] commands = input.Split(null);
@@ -56,7 +58,7 @@ namespace TextAdventure
             string result = "";
 
             // switch based on verb
-            if (verb == "look")
+            if (verb == "look" || verb == "examine")
             {
                 result = DoLook(noun);
             }
@@ -73,77 +75,27 @@ namespace TextAdventure
             // look without a noun gives the description of the current room
             // with a noun, give description of the object named
             string result = "";
-            if (noun == "")
-            {
-                // "look" - room description
-                Room r = World.Rooms[World.PlayerLoc];
-                result += r.Name + NEWLINE;
-                result += r.Description + NEWLINE;
-                // list objects
-                foreach (Object o in World.Objects )
-                {
-                    if (o.Location == r.Id)
-                    {
-                        result += "There is a " + o.Name + " here." + NEWLINE;
-                    }
-                }
-                // list exits
-                result += "Exits lead:";
-                foreach (Exit ex in r.Exits)
-                {
-                    if (ex.Destination != -1)
-                    {
-                        result += " " + ex.Name;
-                    }
-                }
-                
-            }
-            else
-            {
-                // "look noun" - item description
-                bool exists = false;
-                foreach (Object o in World.Objects)
-                {
-                    if (noun == o.Name)
-                    {
-                        exists = true;
-                        result += o.Description;
-                    }
-                }
-                if (!exists) {
-                    result += "I don't see " + noun + " here.";
-                }
-                
-            }
-            result += NEWLINE;
+            CommandLook cmd = new CommandLook();
+            cmd.Engine = this;
+            cmd.Try(noun);
+            result = cmd.Output;
             return result;
         }
 
         private string DoGo(string noun)
         {
             string result = "";
-            Room r = World.Rooms[World.PlayerLoc];
-            foreach (Exit ex in r.Exits)
+            CommandGo cmd = new CommandGo();
+            cmd.Engine = this;
+            cmd.Try(noun);
+            result = cmd.Output;
+            if (verbose)
             {
-                if (noun == ex.Name.ToLower())
-                {
-                    if (ex.Destination == -1)
-                    {
-                        result += "You can't go that way." + NEWLINE;
-                        return result;
-                    }
-                    else
-                    {
-                        // valid room exit -- move player to new room.
-                        World.PlayerLoc = ex.Destination;
-                        result += "You travel " + ex.Name + " to " + World.Rooms[World.PlayerLoc].Name + "." + NEWLINE;
-
-                        result += DoLook("");
-                    }
-                }
+                result += DoLook(""); // describe newly entered room
             }
-
+            
             return result;
+
         }
 
     } // class GameEngine

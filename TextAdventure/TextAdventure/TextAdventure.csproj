@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command.cs" />
+    <Compile Include="CommandGo.cs" />
+    <Compile Include="CommandLook.cs" />
     <Compile Include="Creature.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
