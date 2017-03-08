@@ -74,21 +74,67 @@ namespace TextAdventure
         {
             // look without a noun gives the description of the current room
             // with a noun, give description of the object named
+            // right now, only 'look'
             string result = "";
-            CommandLook cmd = new CommandLook();
-            cmd.Engine = this;
-            cmd.Try(noun);
-            result = cmd.Output;
+            // what room are we in?
+            int row = World.PlayerRow;
+            int col = World.PlayerColumn;
+            // describe it to the player
+            string roomName = World.playGrid[row, col].Name;
+            string roomDesc = World.playGrid[row, col].Description;
+            result += roomName 
+                + " (" + row + "," + col + ")"
+                + NEWLINE + roomDesc + NEWLINE;
+
             return result;
         }
 
         private string DoGo(string noun)
         {
             string result = "";
-            CommandGo cmd = new CommandGo();
-            cmd.Engine = this;
-            cmd.Try(noun);
-            result = cmd.Output;
+            int row = World.PlayerRow;
+            int col = World.PlayerColumn;
+
+            switch (noun)
+            {
+                case "north":
+                    row--;
+                    break;
+                case "south":
+                    row++;
+                    break;
+                case "west":
+                    col--;
+                    break;
+                case "east":
+                    col++;
+                    break;  
+            }
+            // sanity check we didn't fall off the world
+            string goError = "No exit" + NEWLINE;
+            if (col<0)
+            {
+                col = 0;
+                result += goError;
+            }
+            if (row<0)
+            {
+                row = 0;
+                result += goError;
+            }
+            if (col>World.MaxCol-1)
+            {
+                col = World.MaxCol - 1;
+                result += goError;
+            }
+            if (row>World.MaxRow-1)
+            {
+                row = World.MaxRow - 1;
+                result += goError;
+            }
+            World.PlayerRow = row;
+            World.PlayerColumn = col;
+
             if (verbose)
             {
                 result += DoLook(""); // describe newly entered room

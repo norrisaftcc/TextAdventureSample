@@ -40,7 +40,6 @@
             this.rtOutput.ForeColor = System.Drawing.SystemColors.Info;
             this.rtOutput.Location = new System.Drawing.Point(25, 23);
             this.rtOutput.Name = "rtOutput";
-            this.rtOutput.ReadOnly = true;
             this.rtOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
             this.rtOutput.Size = new System.Drawing.Size(655, 472);
             this.rtOutput.TabIndex = 0;
