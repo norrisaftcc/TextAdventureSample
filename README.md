@@ -12,4 +12,4 @@ initializes World and handles command processing. Output is given as a string.
 
 # World
 contains state of all in-game entities (Rooms, etc.)
-test
+test2
